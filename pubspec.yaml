@@ -31,6 +31,7 @@ dependencies:
   firebase_storage: "^5.2.0"
   flutter_svg: ^0.19.1
   expansion_tile_card: ^1.1.0
+  configurable_expansion_tile: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,7 @@ flutter:
   assets:
     - images/logo.jpg
     - images/add-to-cart.svg
+    - images/maki.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

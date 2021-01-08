@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../bottomNavIndex.dart';
 import '../widgets/bottomNavBar.dart';
 
 class Cart extends StatefulWidget {
+  static const routeName = '/cart';
   @override
   _CartState createState() => _CartState();
 }
 
 class _CartState extends State<Cart> {
+  final GlobalKey<ScaffoldState> _scaffoldKey2 = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    final BottomNavIndex args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
+      key: _scaffoldKey2,
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -27,11 +32,10 @@ class _CartState extends State<Cart> {
       ),
       body: Center(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.4,
-          height: MediaQuery.of(context).size.height * 0.4,
           child: SvgPicture.asset(
             'images/add-to-cart.svg',
-            fit: BoxFit.scaleDown,
+            width: MediaQuery.of(context).size.width * 0.4,
+            height: MediaQuery.of(context).size.height * 0.4,
           ),
         ),
       ),
@@ -71,7 +75,6 @@ class _CartState extends State<Cart> {
               )
             ],
           )),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

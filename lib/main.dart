@@ -5,7 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:sushi_app/DashboardScreen.dart';
 import 'package:sushi_app/screens/auth_screen.dart';
+import 'package:sushi_app/screens/cart.dart';
+import 'package:sushi_app/screens/my_orders.dart';
+import 'package:sushi_app/screens/roll.dart';
 import 'package:sushi_app/screens/sets_screen.dart';
+import 'package:sushi_app/screens/settings.dart';
 import 'package:sushi_app/widgets/logo_screen.dart';
 
 void main() {
@@ -22,6 +26,13 @@ void main() {
       primaryColor: Colors.red,
       appBarTheme: AppBarTheme(color: Colors.red),
     ),
+    routes: {
+      SetsScreen.routeName: (context) => SetsScreen(),
+      Rolls.routeName: (context) => Rolls(),
+      Cart.routeName: (context) => Cart(),
+      MyOrders.routeName: (context) => MyOrders(),
+      Settings.routeName: (context) => Settings(),
+    },
     home: App(),
   ));
 }
@@ -69,6 +80,6 @@ class _AppState extends State<App> {
       return Logo();
     }
 
-    return DashboardScreen(SetsScreen());
+    return AuthScreen();
   }
 }

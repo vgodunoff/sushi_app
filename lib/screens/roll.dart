@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sushi_app/screens/cart.dart';
-import 'package:sushi_app/widgets/bottomNavBar.dart';
-import 'file:///D:/projects/sushi_app/lib/icons/custom_icon_icons.dart';
 import 'package:sushi_app/widgets/logo_screen.dart';
-import 'file:///D:/projects/sushi_app/lib/icons/trolley_cart_icons.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import '../bottomNavIndex.dart';
 
-class SetsScreen extends StatefulWidget {
-  static const routeName = '/setsScreen';
+class Rolls extends StatefulWidget {
+  static const routeName = '/rolls';
 
-  const SetsScreen({
+  const Rolls({
     Key key,
   }) : super(key: key);
 
   @override
-  _SetsScreenState createState() => _SetsScreenState();
+  _RollsState createState() => _RollsState();
 }
 
-class _SetsScreenState extends State<SetsScreen> {
+class _RollsState extends State<Rolls> {
   final GlobalKey<ScaffoldState> _scaffoldKey1 = new GlobalKey<ScaffoldState>();
 
-  //get getBottomNavIndex => null;
   @override
   Widget build(BuildContext context) {
     // Create a CollectionReference called users that references the firestore collection
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Rolls'),
+      ),
       key: _scaffoldKey1,
       body: Rollset(),
     );
@@ -54,25 +51,34 @@ class Rollset extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference rollSet =
         FirebaseFirestore.instance.collection('rollset');
-    return StreamBuilder<QuerySnapshot>(
-      stream: rollSet.snapshots(),
+    return FutureBuilder<QuerySnapshot>(
+      future: rollSet.get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return Text("Something went wrong");
         }
+        if (snapshot.connectionState == ConnectionState.done) {
+          List dataFromDoc = snapshot.data.docs;
+          print(dataFromDoc);
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: dataFromDoc.length,
+            itemBuilder: (context, index) {
+              // print(dataFromDoc[index]);
+              // print(dataFromDoc[index]['name']);
+              // print(dataFromDoc[index]['price']);
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://firebasestorage.googleapis.com/v0/b/godunoff-sushi-app.appspot.com/o/photos%2F5.jpg?alt=media&token=41328b98-9925-433c-8bd9-f9a03d04aa40'),
+                  radius: 100.0,
+                ),
+                title: Text(dataFromDoc[index]['name']),
+              );
+            },
+          );
         }
-
-        return new ListView(
-          children: snapshot.data.docs.map((DocumentSnapshot document) {
-            return new ListTile(
-              title: new Text(document.data()['name']),
-              subtitle: new Text(document.data()['price'].toString()),
-            );
-          }).toList(),
-        );
       },
     );
   }

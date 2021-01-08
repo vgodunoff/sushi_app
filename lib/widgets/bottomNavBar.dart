@@ -1,72 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:sushi_app/bottomNavIndex.dart';
 import 'package:sushi_app/icons/trolley_cart_icons.dart';
 import 'package:sushi_app/screens/my_orders.dart';
-import 'package:sushi_app/screens/test_card.dart';
+import 'package:sushi_app/screens/sets_screen.dart';
+import '../screens/settings.dart';
+
 import '../screens/cart.dart';
 
-class BottomNavBar extends StatefulWidget {
-  static int _bottomNavIndex = 0;
-
-  int get getBottomNavIndex {
-    return BottomNavBar._bottomNavIndex;
-  }
-
-  @override
-  _BottomNavBarState createState() => _BottomNavBarState();
-
-  void setBottomNavIndex(int index) {
-    BottomNavBar._bottomNavIndex = index;
-  }
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
+class BottomNavBar extends StatelessWidget {
+  int _currentIndex;
+  BottomNavBar(this._currentIndex);
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: widget.getBottomNavIndex,
-      onTap: (index) {
-        setState(() {
-          widget.setBottomNavIndex(index);
-        });
-        print(BottomNavBar().getBottomNavIndex);
-      },
+      currentIndex: _currentIndex,
       type: BottomNavigationBarType.fixed,
       unselectedItemColor: Colors.grey,
       selectedItemColor: Colors.lightBlueAccent,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.menu),
+          icon: InkWell(
+            child: Icon(Icons.menu),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                SetsScreen.routeName,
+                arguments: BottomNavIndex(0),
+              );
+            },
+          ),
           label: 'Меню',
         ),
         BottomNavigationBarItem(
           icon: InkWell(
             child: Icon(Icons.shopping_cart_outlined),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return Cart();
-                }),
-              );
+              Navigator.pushNamed(context, Cart.routeName,
+                  arguments: BottomNavIndex(1));
             },
           ),
           label: 'Корзина',
         ),
         BottomNavigationBarItem(
           icon: InkWell(
-              child: Icon(TrolleyCart.trolley),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return MyHomePage();
-                  }),
-                );
-              }),
+            child: Icon(TrolleyCart.trolley),
+            onTap: () {
+              Navigator.pushNamed(context, MyOrders.routeName,
+                  arguments: BottomNavIndex(2));
+            },
+          ),
           label: 'Мои заказы',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings_outlined),
+          icon: InkWell(
+            child: Icon(Icons.settings_outlined),
+            onTap: () {
+              Navigator.pushNamed(context, Settings.routeName,
+                  arguments: BottomNavIndex(3));
+            },
+          ),
           label: 'Настройки',
         ),
       ],

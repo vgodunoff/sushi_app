@@ -33,7 +33,9 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   RaisedButton(child: Text('Login'), onPressed: () {}),
                   FlatButton(
-                      onPressed: () {}, child: Text('Create new account'))
+                    onPressed: () {},
+                    child: Text('Create new account'),
+                  )
                 ],
               ),
             ),
