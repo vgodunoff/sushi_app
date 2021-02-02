@@ -1,12 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sushi_app/screens/cart.dart';
-import 'package:sushi_app/widgets/bottomNavBar.dart';
-import 'file:///D:/projects/sushi_app/lib/icons/custom_icon_icons.dart';
-import 'package:sushi_app/widgets/logo_screen.dart';
-import 'file:///D:/projects/sushi_app/lib/icons/trolley_cart_icons.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import '../bottomNavIndex.dart';
 
 class SetsScreen extends StatefulWidget {
   static const routeName = '/setsScreen';
@@ -36,10 +31,11 @@ class _SetsScreenState extends State<SetsScreen> {
 }
 
 class Rollset extends StatelessWidget {
-  const Rollset({
+  Rollset({
     Key key,
   }) : super(key: key);
 
+  String url = '';
   Future<String> downloadURLImage(String photo) async {
     String downloadURL = await firebase_storage.FirebaseStorage.instance
         .ref('rollset/$photo.jpg')
@@ -67,13 +63,136 @@ class Rollset extends StatelessWidget {
 
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
-            return new ListTile(
-              title: new Text(document.data()['name']),
-              subtitle: new Text(document.data()['price'].toString()),
+            return Card(
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            image: DecorationImage(
+                                image:
+                                    NetworkImage(document.data()['imageUrl']),
+                                fit: BoxFit.fitWidth),
+                          ),
+                        ),
+                        flex: 2,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    document.data()['name'],
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15),
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {}),
+                                ],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                              SizedBox(
+                                height: 45.0,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '${document.data()['price'].toString()},00 тг.',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15),
+                                  ),
+                                  FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                      ),
+                                      color: Colors.red,
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        createDialog(context);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text('Хочу'),
+                                          Icon(Icons.add_shopping_cart)
+                                        ],
+                                      )),
+                                ],
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          ),
+                        ),
+                        flex: 3,
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                ),
+              ),
             );
           }).toList(),
         );
       },
     );
+  }
+
+  createDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(
+                'Чтобы добавить товар в корзину, пожалуйста авторизуйтесь'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'отмена'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  )),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/profile');
+                },
+                child: Text(
+                  'ok'.toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }

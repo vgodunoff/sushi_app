@@ -11,9 +11,6 @@ import 'icons/custom_icon_icons.dart';
 import 'icons/trolley_cart_icons.dart';
 
 class DashboardScreen extends StatefulWidget {
-  // Widget page;
-  // DashboardScreen({this.page});
-
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }

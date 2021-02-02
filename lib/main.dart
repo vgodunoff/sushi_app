@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:sushi_app/DashboardScreen.dart';
+import 'package:sushi_app/screens/admin.dart';
 import 'package:sushi_app/screens/auth_screen.dart';
 import 'package:sushi_app/screens/cart.dart';
 import 'package:sushi_app/screens/my_orders.dart';
+import 'package:sushi_app/screens/phone_login.dart';
 import 'package:sushi_app/screens/roll.dart';
 import 'package:sushi_app/screens/sets_screen.dart';
 import 'package:sushi_app/screens/settings.dart';
@@ -25,6 +27,7 @@ void main() {
     theme: ThemeData(
       primaryColor: Colors.red,
       appBarTheme: AppBarTheme(color: Colors.red),
+      accentColor: Colors.red,
     ),
     routes: {
       SetsScreen.routeName: (context) => SetsScreen(),
@@ -32,6 +35,8 @@ void main() {
       Cart.routeName: (context) => Cart(),
       MyOrders.routeName: (context) => MyOrders(),
       Settings.routeName: (context) => Settings(),
+      PhoneAuth.routeName: (context) => PhoneAuth(),
+      Admin.routeName: (context) => Admin(),
     },
     home: App(),
   ));
@@ -80,6 +85,6 @@ class _AppState extends State<App> {
       return Logo();
     }
 
-    return AuthScreen();
+    return DashboardScreen();
   }
 }
